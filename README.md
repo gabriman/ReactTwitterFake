@@ -1,4 +1,4 @@
-# reactcarlosazaustre
+# React Twitter React
 React Social media app with twitter style, created using Carlos Azaustre React Course. 
 
 Using React, ES6, Webpack and Babel.
