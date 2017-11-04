@@ -22,9 +22,9 @@ class Message extends Component {
         </div>
         <h3>{this.props.text}</h3>
         <div className={styles.buttons}>
-          <div className={styles.icons}><span className='fa fa-reply' /></div>
-          <div className={styles.icons}><span className='fa fa-retweet' /></div>
-          <div className={styles.icons}><span className='fa fa-star' /></div>
+          <div className={styles.icon}><span className='fa fa-reply' /></div>
+          <div className={styles.icon}><span className='fa fa-retweet' /></div>
+          <div className={styles.icon}><span className='fa fa-star' /></div>
         </div>
       </div>
     )

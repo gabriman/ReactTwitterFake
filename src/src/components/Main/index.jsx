@@ -7,11 +7,19 @@ class Main extends Component {
     this.state = {
       messages : [
         {
-          text: 'message del tweet',
-          picture: 'http://fuuse.net/wp-content/uploads/2016/02/avatar-placeholder.png',
-          displayName: 'Gabriel Rodriguez',
+          text: 'Mensaje del tweet',
+          picture: 'http://repexgroup.es/wp-content/uploads/avatar-1.png',
+          displayName: 'Gabri the best',
           username: 'gabriman',
-          date: Date.now()
+          date: Date.now() - 180000
+        },
+  
+        {
+          text: 'Este es otro mensaje',
+          picture: 'http://pngimg.com/uploads/michael_jackson/michael_jackson_PNG49.png',
+          displayName: 'Michael Jackson',
+          username: 'mjackson',
+          date: Date.now() - 1800000
         }
       ]
     }
