@@ -5,16 +5,39 @@ import styles from './message.css'
 class Message extends Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      pressRetweet: false,
+      pressFavourite: false
+    }
+    
+    this.onPressRetweet = this.onPressRetweet.bind(this);
+    this.onPressFavourite = this.onPressFavourite.bind(this);
   }
   
-  render(){
+  onPressFavourite() {
+    this.props.onFavourite();
+    this.setState({
+      pressFavourite : true
+    })
+  }
+  
+  onPressRetweet() {
+    this.props.onRetweet();
+    this.setState({
+      pressRetweet : true
+    })
+  
+  }
+  
+  render() {
     let dateFormat = moment(this.props.date).fromNow();
-
-    return(
+    
+    return (
       <div className={styles.root}>
         <div className={styles.user}>
           <figure>
-            <img className={styles.avatar} src={this.props.picture} />
+            <img className={styles.avatar} src={this.props.picture}/>
           </figure>
           <span className={styles.displayName}>{this.props.displayName}</span>
           <span className={styles.username}>{this.props.username}</span>
@@ -22,9 +45,21 @@ class Message extends Component {
         </div>
         <h3>{this.props.text}</h3>
         <div className={styles.buttons}>
-          <div className={styles.icon}><span className='fa fa-reply' /></div>
-          <div className={styles.icon}><span className='fa fa-retweet' /></div>
-          <div className={styles.icon}><span className='fa fa-star' /></div>
+          <div className={styles.icon}><span className='fa fa-reply'/></div>
+          <div
+            className={(this.state.pressRetweet) ? styles.rtGreen : ''}
+            onClick={this.onPressRetweet}
+          >
+            <span className='fa fa-retweet'/>
+            <span className={styles.num}>{this.props.numRetweets}</span>
+          </div>
+          <div
+            className={(this.state.pressFavourite) ? styles.favYellow : ''}
+            onClick={this.onPressFavourite}
+          >
+            <span className='fa fa-star'/>
+            <span className={styles.num}>{this.props.numFavourites}</span>
+          </div>
         </div>
       </div>
     )

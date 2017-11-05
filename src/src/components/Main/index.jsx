@@ -6,9 +6,10 @@ import InputText from '../InputText'
 import ProfileBar from '../ProfileBar'
 
 class Main extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      user: Object.assign({}, this.props.user, {retweets: []}, {favourites: []}),
       openText: false,
       messages: [
         {
@@ -17,7 +18,9 @@ class Main extends Component {
           picture: 'http://repexgroup.es/wp-content/uploads/avatar-1.png',
           displayName: 'Gabri the best',
           username: 'gabriman',
-          date: Date.now() - 180000
+          date: Date.now() - 180000,
+          retweets: 0,
+          favourites: 0,
         },
         
         {
@@ -26,7 +29,9 @@ class Main extends Component {
           picture: 'http://pngimg.com/uploads/michael_jackson/michael_jackson_PNG49.png',
           displayName: 'Michael Jackson',
           username: 'mjackson',
-          date: Date.now() - 1800000
+          date: Date.now() - 1800000,
+          retweets: 0,
+          favourites: 0,
         }
       ]
     };
@@ -34,9 +39,11 @@ class Main extends Component {
     this.handleSendText = this.handleSendText.bind(this);
     this.handleCloseText = this.handleCloseText.bind(this);
     this.handleOpenText = this.handleOpenText.bind(this);
+    this.handleRetweet = this.handleRetweet.bind(this);
+    this.handleFavourite = this.handleFavourite.bind(this);
   }
   
-  handleSendText(event){
+  handleSendText(event) {
     event.preventDefault();
     let newMessage = {
       id: uuid.v4(),
@@ -48,32 +55,76 @@ class Main extends Component {
     };
     
     this.setState(
-      { messages : this.state.messages.concat(newMessage),
+      {
+        messages: this.state.messages.concat(newMessage),
         openText: false
       }
     )
   }
   
-  handleCloseText(event){
+  handleCloseText(event) {
     event.preventDefault();
-    this.setState( { openText: false })
+    this.setState({openText: false})
+  }
+  
+  handleOpenText(event) {
+    event.preventDefault();
+    this.setState({openText: true})
+  }
+  
+  handleRetweet(msgId) {
     
+    let alreadyRetweeted = this.state.user.retweets.filter(rt => rt === msgId)
+    
+    if (alreadyRetweeted.length === 0) {
+      let messages = this.state.messages.map(msg => {
+        if (msg.id === msgId) {
+          msg.retweets++;
+        }
+        return msg
+      });
+      
+      let user = Object.assign({}, this.state.user);
+      user.retweets.push(msgId);
+      
+      this.setState({
+          messages,
+          user
+        }
+      )
+    }
   }
   
-  handleOpenText(event){
-    event.preventDefault();
-    this.setState( { openText: true })
+  handleFavourite(msgId) {
+    let alreadyFavourited = this.state.user.favourites.filter(fav => fav === msgId)
+    
+    if (alreadyFavourited.length === 0) {
+      let messages = this.state.messages.map(msg => {
+        if (msg.id === msgId) {
+          msg.favourites++;
+        }
+        return msg
+      });
+      
+      let user = Object.assign({}, this.state.user);
+      user.favourites.push(msgId);
+      
+      this.setState({
+          messages,
+          user
+        }
+      )
+    }
   }
   
-  renderOpenText(){
-    if (this.state.openText){
+  renderOpenText() {
+    if (this.state.openText) {
       return (
         
         <InputText
-          onSendText = {this.handleSendText}
-          onCloseText = {this.handleCloseText}
+          onSendText={this.handleSendText}
+          onCloseText={this.handleCloseText}
         />
-        
       )
     }
   }
@@ -86,7 +137,11 @@ class Main extends Component {
           username={this.props.user.email.split('@')[0]}
           onOpenText={this.handleOpenText}/>
         {this.renderOpenText()}
-        <MessageList messages={this.state.messages}/>
+        <MessageList
+          messages={this.state.messages}
+          onRetweet={this.handleRetweet}
+          onFavourite={this.handleFavourite}
+        />
       </div>
     );
   }
