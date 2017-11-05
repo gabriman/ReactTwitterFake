@@ -1,20 +1,27 @@
 import React, {Component} from 'react'
+import uuid from 'uuid'
+
 import MessageList from '../MessageList'
+import InputText from '../InputText'
+import ProfileBar from '../ProfileBar'
 
 class Main extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      messages : [
+      openText: false,
+      messages: [
         {
+          id: uuid.v4(),
           text: 'Mensaje del tweet',
           picture: 'http://repexgroup.es/wp-content/uploads/avatar-1.png',
           displayName: 'Gabri the best',
           username: 'gabriman',
           date: Date.now() - 180000
         },
-  
+        
         {
+          id: uuid.v4(),
           text: 'Este es otro mensaje',
           picture: 'http://pngimg.com/uploads/michael_jackson/michael_jackson_PNG49.png',
           displayName: 'Michael Jackson',
@@ -25,10 +32,28 @@ class Main extends Component {
     }
   }
   
+  handleOpenText(event){
+    event.preventDefault();
+    this.setState( { openText: true })
+  }
+  
+  renderOpenText(){
+    if (this.state.openText){
+      return <InputText />
+    }
+  }
+  
   render() {
     return (
-      <MessageList messages={this.state.messages} />
-    )
+      <div>
+        <ProfileBar
+          picture={this.props.user.photoURL}
+          username={this.props.user.email.split('@')[0]}
+          onOpenText={this.handleOpenText.bind(this)}/>
+        {this.renderOpenText()}
+        <MessageList messages={this.state.messages}/>
+      </div>
+    );
   }
 }
 
