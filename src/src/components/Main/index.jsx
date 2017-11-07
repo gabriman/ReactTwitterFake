@@ -11,6 +11,7 @@ class Main extends Component {
     this.state = {
       user: Object.assign({}, this.props.user, {retweets: []}, {favourites: []}),
       openText: false,
+      usernameToReply: '',
       messages: [
         {
           id: uuid.v4(),
@@ -41,6 +42,7 @@ class Main extends Component {
     this.handleOpenText = this.handleOpenText.bind(this);
     this.handleRetweet = this.handleRetweet.bind(this);
     this.handleFavourite = this.handleFavourite.bind(this);
+    this.handleReplyTweet = this.handleReplyTweet.bind(this);
   }
   
   handleSendText(event) {
@@ -74,7 +76,7 @@ class Main extends Component {
   
   handleRetweet(msgId) {
     
-    let alreadyRetweeted = this.state.user.retweets.filter(rt => rt === msgId)
+    let alreadyRetweeted = this.state.user.retweets.filter(rt => rt === msgId);
     
     if (alreadyRetweeted.length === 0) {
       let messages = this.state.messages.map(msg => {
@@ -96,7 +98,7 @@ class Main extends Component {
   }
   
   handleFavourite(msgId) {
-    let alreadyFavourited = this.state.user.favourites.filter(fav => fav === msgId)
+    let alreadyFavourited = this.state.user.favourites.filter(fav => fav === msgId);
     
     if (alreadyFavourited.length === 0) {
       let messages = this.state.messages.map(msg => {
@@ -117,6 +119,14 @@ class Main extends Component {
     }
   }
   
+  handleReplyTweet(msg, usernameToReply){
+    this.setState({
+        openText: true,
+        usernameToReply: usernameToReply
+    })
+  }
+  
+  
   renderOpenText() {
     if (this.state.openText) {
       return (
@@ -124,6 +134,7 @@ class Main extends Component {
         <InputText
           onSendText={this.handleSendText}
           onCloseText={this.handleCloseText}
+          usernameToReply = {this.state.usernameToReply}
         />
       )
     }
@@ -141,6 +152,7 @@ class Main extends Component {
           messages={this.state.messages}
           onRetweet={this.handleRetweet}
           onFavourite={this.handleFavourite}
+          onReplyTweet={this.handleReplyTweet}
         />
       </div>
     );
