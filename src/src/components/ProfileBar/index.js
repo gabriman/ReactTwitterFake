@@ -1,17 +1,21 @@
 import React, {Component} from 'react'
 import styles from './profile-bar.css'
+import {Link} from 'react-router-dom'
 
 class ProfileBar extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
   
   render() {
     return (
       <div className={styles.root}>
-        <figure>
-          <img className={styles.avatar} src={this.props.picture}/>
-        </figure>
+        
+        <Link to='/profile'>
+          <figure>
+            <img className={styles.avatar} src={this.props.picture}/>
+          </figure>
+        </Link>
         <span className={styles.username}>Hola @{this.props.username}!</span>
         <button onClick={this.props.onOpenText} className={styles.button}>
           <span className='fa fa-lg fa-edit'></span>
