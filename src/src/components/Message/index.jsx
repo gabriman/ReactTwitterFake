@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 import styles from './message.css'
 
@@ -18,27 +19,29 @@ class Message extends Component {
   onPressFavourite() {
     this.props.onFavourite();
     this.setState({
-      pressFavourite : true
+      pressFavourite: true
     })
   }
   
   onPressRetweet() {
     this.props.onRetweet();
     this.setState({
-      pressRetweet : true
+      pressRetweet: true
     })
-  
   }
   
   render() {
     let dateFormat = moment(this.props.date).fromNow();
+    let userLink = `/user/${this.props.username}`;
     
     return (
       <div className={styles.root}>
         <div className={styles.user}>
-          <figure>
-            <img className={styles.avatar} src={this.props.picture}/>
-          </figure>
+          <Link to={userLink}>
+            <figure>
+              <img className={styles.avatar} src={this.props.picture}/>
+            </figure>
+          </Link>
           <span className={styles.displayName}>{this.props.displayName}</span>
           <span className={styles.username}>{this.props.username}</span>
           <span className={styles.date}>{dateFormat}</span>
@@ -67,7 +70,7 @@ class Message extends Component {
             <span className='fa fa-star'/>
             <span className={styles.num}>{this.props.numFavourites}</span>
           </div>
-          
+        
         </div>
       </div>
     )
